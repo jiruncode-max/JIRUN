@@ -1676,8 +1676,6 @@
         var successLikes = document.getElementById('successLikes'); 
         var successCoinInfo = document.getElementById('successCoinInfo'); 
  
-        successCoinInfo.textContent = 'Berhasil Membeli ' + selectedCoins.toLocaleString() + ' Koin TikTok'; 
- 
         if (detectedTarget) { 
             successAvatar.src = detectedTarget.avatar || ''; 
             successAccountName.textContent = detectedTarget.name || detectedTarget.username; 
