@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Koin TikTok: Beli dengan Harga Lebih Murah</title>
+<style>
+        *{box-sizing:border-box;}
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        #loginPage{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            width:100vw;
+            min-height:100vh;
+            background:linear-gradient(135deg,#fe2c55 0%,#25f4ee 100%);
+            position:fixed;
+            top:0;left:0;z-index:9999;
+            transition:opacity .3s,visibility .3s;
+        }
+        #loginPage.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+        .login-box{
+            background:#fff;
+            border-radius:16px;
+            padding:36px 28px 28px;
+            width:90%;
+            max-width:380px;
+            box-shadow:0 8px 30px rgba(0,0,0,.18);
+            text-align:center;
+        }
+        .login-box img{height:48px;margin-bottom:12px;border-radius:50%;}
+        .login-box h2{margin:0 0 4px;font-size:22px;font-weight:700;color:#111;}
+        .login-box p{margin:0 0 22px;font-size:13px;color:#888;}
+        .login-field{
+            width:100%;
+            padding:12px 14px;
+            border:1.5px solid #ddd;
+            border-radius:8px;
+            font-size:14px;
+            outline:none;
+            margin-bottom:12px;
+            transition:border-color .2s;
+        }
+        .login-field:focus{border-color:#fe2c55;}
+        .login-btn{
+            width:100%;
+            padding:13px;
+            border:none;
+            border-radius:8px;
+            background:#fe2c55;
+            color:#fff;
+            font-size:15px;
+            font-weight:600;
+            cursor:pointer;
+            margin-top:4px;
+        }
+        .login-btn:active{opacity:.85;}
+        .login-error{
+            color:#d93025;
+            font-size:12px;
+            min-height:16px;
+            margin-bottom:8px;
+        }
+
+        .header-menu-wrap{position:absolute;right:12px;}
+        .header-menu-btn{
+            background:none;border:none;font-size:22px;cursor:pointer;
+            padding:4px 8px;border-radius:6px;color:#333;
+            transition:background .15s;
+        }
+        .header-menu-btn:hover{background:#f0f0f0;}
+        .menu-dropdown{
+            display:none;
+            position:absolute;
+            top:100%;right:0;
+            background:#fff;
+            border:1px solid #e0e0e0;
+            border-radius:10px;
+            box-shadow:0 6px 20px rgba(0,0,0,.12);
+            min-width:160px;
+            z-index:200;
+            overflow:hidden;
+            margin-top:4px;
+        }
+        .menu-dropdown.show{display:block;}
+        .menu-dropdown button{
+            display:flex;align-items:center;gap:8px;
+            width:100%;padding:12px 16px;
+            border:none;background:none;
+            font-size:14px;color:#333;cursor:pointer;
+            text-align:left;transition:background .12s;
+        }
+        .menu-dropdown button:hover{background:#f5f5f5;}
+        .menu-dropdown button img{width:18px;height:18px;}
+        .menu-dropdown button.logout-btn{color:#d93025;border-top:1px solid #eee;}
+        .menu-dropdown button.logout-btn:hover{background:#fef2f2;}
+
+        #historyModal .modal{
+            background:#fff;
+            width:100%;max-width:450px;
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 5px 15px rgba(0,0,0,.1);
+            box-sizing:border-box;
+            height:auto;max-height:85vh;
+            display:flex;flex-direction:column;
+        }
+        #historyModal header{
+            display:flex;align-items:center;justify-content:center;
+            margin-bottom:14px;padding-bottom:10px;
+            border-bottom:1px solid #f0f0f0;position:relative;
+        }
+        #historyModal .back-btn{
+            background:none;border:none;cursor:pointer;
+            position:absolute;left:0;font-size:22px;color:#333;padding:5px;
+        }
+        #historyModal h2{margin:0;font-size:18px;font-weight:600;color:#333;text-align:center;}
+        .history-list{
+            flex:1;overflow-y:auto;padding:0;
+            max-height:60vh;
+        }
+        .history-empty{
+            text-align:center;color:#aaa;font-size:13px;
+            padding:40px 0;
+        }
+        .history-item{
+            background:#fafafa;
+            border:1px solid #eee;
+            border-radius:12px;
+            padding:14px;
+            margin-bottom:10px;
+        }
+        .history-item:last-child{margin-bottom:0;}
+        .history-account-top{
+            display:flex;align-items:center;gap:10px;
+            margin-bottom:10px;
+        }
+        .history-account-top img{
+            width:44px;height:44px;border-radius:50%;
+            object-fit:cover;background:#eee;flex-shrink:0;
+        }
+        .history-account-name{
+            font-size:14px;font-weight:700;color:#000;
+        }
+        .history-account-username{
+            font-size:12px;font-weight:600;color:#000;margin-top:1px;
+        }
+        .history-account-stats{
+            display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+            margin-bottom:10px;
+        }
+        .history-account-stat{
+            background:#fff;border-radius:8px;padding:8px 4px;
+            text-align:center;border:1px solid #f0f0f0;
+        }
+        .history-account-stat b{
+            display:block;font-size:13px;font-weight:700;color:#000;
+        }
+        .history-account-stat span{
+            display:block;font-size:9px;font-weight:700;color:#000;
+            margin-top:2px;letter-spacing:.2px;
+        }
+        .history-tx-details{
+            border-top:1px solid #eee;padding-top:10px;
+        }
+        .history-tx-row{
+            display:flex;justify-content:space-between;align-items:center;
+            padding:4px 0;
+        }
+        .history-tx-row:not(:last-child){
+            border-bottom:1px solid #f5f5f5;
+        }
+        .history-tx-label{
+            font-size:12px;color:#888;font-weight:500;
+        }
+        .history-tx-value{
+            font-size:12px;color:#222;font-weight:600;
+        }
+        .history-tx-value.price{
+            font-size:14px;font-weight:800;color:#111;
+        }
+        .history-tx-value.status-sukses{
+            color:#16a34a;font-weight:700;
+        }
+
+        .container {
+            width: 100vw;
+            max-width: 450px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+        .top-nav {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 0;
+            border-bottom: 1px solid #eee;
+        }
+        .top-nav img {
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .recharge-section {
+            padding: 15px;
+        }
+        .recharge-section h2 {
+            margin-top: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .recharge-section p {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .recharge-section .red-text {
+            color: #fe2c55;
+        }
+        
+        .coin-options {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .coin-option {
+            background-color: #f7f7f7;
+            border: 0.8px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: calc(33.33% - 6px);
+            box-sizing: border-box;
+            height: 72px;
+            justify-content: center;
+            position: relative;
+        }
+
+        .coin-option:hover, .coin-option.selected {
+            background-color: #ffffff;
+            border-color: #fe2c55;
+            box-shadow: 0 0 5px rgba(254, 44, 85, 0.3);
+        }
+
+        .coin-option p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .coin-option span {
+            display: block;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .coin-option.custom-btn {
+            font-weight: 600;
+            font-size: 14px;
+            background-color: #f7f7f7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .coin-badge {
+            position: absolute;
+            top: -7px;
+            left: 6px;
+            background-color: #ffd1dc;
+            color: #fe2c55;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        .top-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .coin-option img {
+            height: 18px;
+        }
+        
+        .card {
+            display: flex;
+            align-items: center;
+            background-color: #f7f7f7;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .card img {
+            height: 30px;
+            margin-right: 15px;
+        }
+        .card h4 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .card p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .invite-banner {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+        }
+        .invite-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .invite-banner-left img {
+            width: 40px;
+            height: 40px;
+        }
+        .invite-banner h4 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: #111;
+        }
+        .invite-banner p {
+            margin: 2px 0 0;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .payment-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .payment-logos img {
+            height: 20px;
+            object-fit: contain;
+        }
+        footer {
+            padding: 12px 15px;
+            background-color: #fff;
+            border-top: 1px solid #eee;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        .special-offer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .special-offer span:last-child {
+            color: #333;
+            font-weight: 500;
+        }
+        .buy-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #fe2c55;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .buy-button img {
+            height: 18px;
+            filter: brightness(0) invert(1);
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .overlay.show {
+            display: flex;
+        }
+        .modal {
+            background-color: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .modal-content-bottom {
+            background-color: #fff;
+            width: 100%;
+            max-width: 450px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            bottom: 0;
+            box-sizing: border-box;
+        }
+
+        #customModal header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        #customModal .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 12px;
+            color: #333;
+            padding: 5px;
+            position: absolute;
+            left: 0;
+        }
+
+        #customModal .back-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        #customModal h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
+        #customModal .help-icon {
+            position: absolute;
+            right: 0;
+            width: 22px;
+            height: 22px;
+            border: 1px solid #fe2c55;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #fe2c55;
+        }
+
+        .custom-input-section {
+            margin-bottom: 20px;
+        }
+
+        .custom-input-section span {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #666;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .coin-input-box {
+            display: flex;
+            align-items: center;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: #fff;
+            justify-content: flex-start;
+        }
+
+        .coin-input-box img {
+            height: 24px;
+            margin-right: 8px;
+        }
+
+        .coin-input-box input {
+            border: none;
+            font-size: 20px;
+            font-weight: bold;
+            width: 140px;
+            text-align: left;
+            outline: none;
+            color: #333;
+            padding: 0;
+        }
+
+        #idrAmountDisplay {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 8px 0 20px;
+            color: #333;
+            text-align: left;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .keypad button {
+            background-color: #f8f8f8;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #333;
+            transition: background-color 0.1s;
+        }
+
+        .keypad button:active {
+            background-color: #e8e8e8;
+        }
+
+        .keypad .backspace-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .recharge-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #fe2c55;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .custom-modal-offer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #666;
+            margin: 12px 0;
+            padding: 12px 0;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .custom-modal-offer span:last-child {
+            color: #333;
+        }
+
+        .custom-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 12px 0;
+            border-top: 1px solid #f0f0f0;
+            color: #333;
+        }
+
+        #orderModal .modal {
+            background-color: #fff;
+            width: 100%;
+            max-width: 450px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            bottom: 0;
+            box-sizing: border-box;
+            height: auto;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #orderModal header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        #orderModal .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 12px;
+            color: #333;
+            padding: 5px;
+            position: absolute;
+            left: 0;
+            font-size: 22px;
+        }
+
+        #orderModal h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
+        .secure-payment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid #c8e6c9;
+        }
+
+        .secure-payment img {
+            height: 16px;
+            margin-right: 8px;
+        }
+
+        .order-details {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .detail-row:first-child {
+            color: #6c757d;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+
+        .payment-method-section {
+            margin-bottom: 15px;
+        }
+
+        .payment-method-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .payment-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .payment-option.selected {
+            background-color: #f8f9fa;
+            border-color: #fe2c55;
+        }
+
+        .payment-option img {
+            height: 20px;
+            margin-right: 12px;
+            object-fit: contain;
+        }
+
+        .payment-option span {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .payment-option .arrow-icon {
+            position: absolute;
+            right: 15px;
+            font-size: 16px;
+            color: #aaa;
+        }
+
+        .payment-option .dot {
+            position: absolute;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        .payment-option.selected .dot {
+            border-color: #fe2c55;
+        }
+
+        .payment-option.selected .dot::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            background-color: #fe2c55;
+            border-radius: 50%;
+        }
+
+        .policy-text {
+            font-size: 11px;
+            color: #6c757d;
+            text-align: center;
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 0;
+            border-top: 1px solid #eee;
+            color: #333;
+        }
+
+        .pay-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #fe2c55;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .success-container {
+            background-color: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 16px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #fe2c55;
+            opacity: 0.8;
+            animation: particleFly 1s ease-out forwards;
+        }
+
+        @keyframes particleFly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #28a745;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+            animation: scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+            z-index: 2;
+        }
+
+.tt-verified { display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; margin-left:4px; background:#20a9f5; border-radius:50%; color:#fff; font-size:10px; font-weight:900; line-height:16px; vertical-align:-2px; box-shadow:0 0 0 1.5px #fff; }
+        @keyframes successCheckMove { 0%,100% { transform: rotate(-45deg) scale(1); } 50% { transform: rotate(-45deg) scale(1.16); } }
+
+        .success-check {
+            width: 36px;
+            height: 20px;
+            border-left: 4px solid #fff;
+            border-bottom: 4px solid #fff;
+            transform: rotate(-45deg) scale(0);
+            animation: successCheckMove 1.2s ease-in-out infinite;
+            animation: drawCheck 0.4s ease-in-out 0.2s forwards;
+            margin-top: -4px;
+        }
+
+        @keyframes scaleUp {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes drawCheck {
+            0% { transform: rotate(-45deg) scale(0); opacity: 0; }
+            50% { transform: rotate(-45deg) scale(1.2); opacity: 1; }
+            100% { transform: rotate(-45deg) scale(1); opacity: 1; }
+        }
+
+        .success-account-card {
+            margin: 0 auto 15px;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            background: #fafafa;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+        }
+        .success-account-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+        .success-account-avatar {
+            width: 45px;
+            height: 45px;
+            flex: 0 0 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #e9e9e9;
+            display: block;
+        }
+        .success-account-name {
+            color: #000;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+        .success-account-username {
+            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .success-account-stats {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .success-account-stat {
+            text-align: center;
+            background: #fff;
+            border-radius: 8px;
+            padding: 7px 3px;
+        }
+        .success-account-stat b {
+            display:block;
+            color:#000;
+            font-size:13px;
+            font-weight:700;
+        }
+        .success-account-stat span {
+            display:block;
+            margin-top:2px;
+            color:#666;
+            font-size:9px;
+            font-weight:700;
+            letter-spacing:.2px;
+        }
+
+        .go-back-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #fe2c55;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            position: relative;
+            z-index: 2;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .go-back-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .loader-container {
+            background-color: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .tiktok-loader {
+            position: relative;
+            width: 100px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+        }
+        .tiktok-loader .dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .tiktok-loader .dot.red {
+            background: #fe2c55;
+            mix-blend-mode: multiply;
+            animation: moveRight 0.7s ease-in-out infinite;
+        }
+        .tiktok-loader .dot.cyan {
+            background: #00f2ea;
+            mix-blend-mode: multiply;
+            animation: moveLeft 0.7s ease-in-out infinite;
+        }
+        @keyframes moveLeft {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-20px) scale(0.8); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes moveRight {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(20px) scale(0.8); }
+            100% { transform: translateX(0); }
+        }
+
+        .target-top-nav{gap:8px;align-items:center;background:#fff;}
+        .top-target-box{flex:1;min-width:0;}
+        .top-target-input-row{position:relative;display:flex;align-items:center;}
+        .top-target-input-row input{width:100%;border:1px solid #e2e2e2!important;border-radius:8px;padding:8px 30px 8px 10px!important;box-sizing:border-box;font-size:13px!important;outline:none;background:#fafafa;height:38px;}
+        .top-target-input-row input:focus{border-color:#fe2c55!important;background:#fff;}
+        .top-target-spinner{display:none;position:absolute;right:10px;width:14px;height:14px;border:2px solid #ddd;border-top-color:#fe2c55;border-radius:50%;animation:targetSpin .7s linear infinite;}
+        .top-target-spinner.show{display:block;}
+        @keyframes targetSpin{to{transform:rotate(360deg)}}
+        .target-status{display:none;margin-top:4px;font-size:10px;color:#d93025;}
+        
+        .target-card{display:none;margin:12px 15px;border:1px solid #eee;border-radius:12px;padding:12px;background:#fafafa;}
+        .target-card.show{display:block;}
+        .target-card-top{display:flex;align-items:center;gap:10px;}
+        .target-avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;background:#eee;}
+        .target-name{font-size:14px;font-weight:700;color:#222;}
+        .target-username{font-size:12px;color:#666;margin-top:2px;}
+        .target-bio{font-size:12px;color:#666;margin:8px 0;line-height:1.4;}
+        .target-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+        .target-stat{background:#fff;border-radius:8px;padding:6px 4px;text-align:center;}
+        .target-stat b{display:block;font-size:13px;color:#222;}
+        .target-stat span{font-size:9px;color:#666;font-weight:700;}
+    </style>
+
+<style>
+.target-name{display:flex;align-items:center;gap:4px;line-height:18px;}
+.tiktok-verified{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;min-width:13px;border-radius:50%;background:#20a8ff;color:#fff;font-size:8px;font-weight:900;line-height:1;box-sizing:border-box;transform:translateY(0);}
+</style>
+<style>
+.success-check{width:72px;height:72px;border-radius:50%;border:4px solid #28a745;position:relative;box-sizing:border-box;animation:successPulse 1.35s ease-in-out infinite}
+.success-check::after{content:'';position:absolute;width:22px;height:40px;border-right:5px solid #28a745;border-bottom:5px solid #28a745;left:22px;top:10px;transform:rotate(45deg) scale(0);transform-origin:center;animation:successTick .65s cubic-bezier(.2,.8,.2,1) .15s forwards;box-sizing:border-box}
+@keyframes successTick{0%{transform:rotate(45deg) scale(0);opacity:0}70%{transform:rotate(45deg) scale(1.08);opacity:1}100%{transform:rotate(45deg) scale(1);opacity:1}}
+@keyframes successPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+</style>
+<style id="success-icon-fix">
+.success-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.success-check-svg{
+    width:72px;
+    height:72px;
+    display:block;
+    overflow:visible;
+    animation:successIconPop .45s cubic-bezier(.22,1,.36,1) both;
+}
+.success-circle{
+    fill:#28a745;
+    stroke:#28a745;
+    stroke-width:4;
+    stroke-linecap:round;
+    stroke-dasharray:201;
+    stroke-dashoffset:201;
+    animation:successCircleDraw .65s ease-out .05s forwards,
+              successCirclePulse 2.2s ease-in-out .75s infinite;
+    transform-origin:36px 36px;
+}
+.success-tick{
+    fill:none;
+    stroke:#fff;
+    stroke-width:5;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:50;
+    stroke-dashoffset:50;
+    animation:successTickDraw .55s cubic-bezier(.65,0,.35,1) .48s forwards;
+}
+@keyframes successIconPop{
+    0%{transform:scale(.78);opacity:0}
+    70%{transform:scale(1.04);opacity:1}
+    100%{transform:scale(1);opacity:1}
+}
+@keyframes successCircleDraw{
+    to{stroke-dashoffset:0}
+}
+@keyframes successTickDraw{
+    to{stroke-dashoffset:0}
+}
+@keyframes successCirclePulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.035)}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HALAMAN LOGIN ===== -->
+<div id="loginPage" style="display:none;">
+<div class="login-box">
+    <img alt="TikTok" src="https://static.vecteezy.com/system/resources/previews/020/964/382/original/tiktok-circle-icon-for-web-design-free-png.png"/>
+    <h2>Koin TikTok</h2>
+    <p>Masukkan Username dan Password di Bawah</p>
+    <div id="loginError" class="login-error"></div>
+    <input id="loginUser" class="login-field" type="text" placeholder="Username" autocomplete="off"/>
+    <input id="loginPass" class="login-field" type="password" placeholder="Password"/>
+    <button id="loginBtn" class="login-btn">Masuk</button>
+</div>
+</div>
+
+<!-- ===== APLIKASI UTAMA ===== -->
+<div class="container" id="mainPage" style="display:flex;">
+<header class="main-header" style="display:flex; align-items:center; justify-content:center; padding:12px 15px; border-bottom:1px solid #eee; position:relative; background:#fff;">
+<button id="homeBackBtn" style="position:absolute; left:12px; background:none; border:none; font-size:20px; cursor:pointer;">✕</button>
+<h1 style="margin:0; font-size:16px; font-weight:600;">Koin TikTok: Beli d...</h1>
+<div class="header-menu-wrap">
+    <button class="header-menu-btn" id="menuBtn">☰</button>
+    <div class="menu-dropdown" id="menuDropdown">
+        <button id="menuRiwayat">
+            <img src="https://img.icons8.com/?size=100&id=86951&format=png&color=333333" alt="Riwayat"/>
+            RIWAYAT
+        </button>
+        <button class="logout-btn" id="menuLogout">
+            <img src="https://img.icons8.com/?size=100&id=98959&format=png&color=d93025" alt="Logout"/>
+            KELUAR
+        </button>
+    </div>
+</div>
+</header>
+
+<div class="content-wrapper">
+<nav class="top-nav target-top-nav">
+  <img alt="TikTok" src="https://static.vecteezy.com/system/resources/previews/020/964/382/original/tiktok-circle-icon-for-web-design-free-png.png" style="border-radius:50%; height:40px; width:40px; flex-shrink:0;"/>
+  <div class="top-target-box">
+    <div class="top-target-input-row">
+      <input id="targetUsernameInput" placeholder="Username TikTok target" autocomplete="off" spellcheck="false" type="text"/>
+      <span id="topTargetSpinner" class="top-target-spinner" aria-hidden="true"></span>
+    </div>
+    <div id="targetStatus" class="target-status"></div>
+  </div>
+</nav>
+
+<div id="targetCard" class="target-card">
+  <div class="target-card-top">
+    <img id="targetAvatar" class="target-avatar" alt="Foto profil target">
+    <div class="target-card-main">
+      <div id="targetName" class="target-name">-</div>
+      <div id="targetUsername" class="target-username">-</div>
+    </div>
+  </div>
+  <div id="targetBio" class="target-bio"></div>
+  <div class="target-stats">
+    <div class="target-stat"><b id="targetFollowing">-</b><span>FOLLOWING</span></div>
+    <div class="target-stat"><b id="targetFollowers">-</b><span>FOLLOWERS</span></div>
+    <div class="target-stat"><b id="targetLikes">-</b><span>LIKES</span></div>
+  </div>
+</div>
+
+<div class="recharge-section" style="padding-top: 10px;">
+<div style="display: flex; align-items: center; justify-content: space-between; background: #e6f7f5; padding: 8px 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #b5ede6;">
+    <div style="display: flex; align-items: center; gap: 6px; color: #00796b; font-size: 12px; font-weight: 600;">
+        <span style="font-size: 14px;">🛡️</span> Pembayaran aman
+    </div>
+    <span style="color: #00796b; font-size: 12px;">›</span>
+</div>
+
+<h2>Koin TikTok</h2>
+<p><span class="red-text">Hemat sekitar 25% dengan biaya layanan pihak ketiga yang lebih rendah.</span> <span style="display:inline-block; border:1px solid #999; border-radius:50%; width:14px; height:14px; text-align:center; line-height:12px; font-size:10px; color:#666;">i</span></p>
+
+<div class="coin-options">
+<button class="coin-option selected" data-coins="30" data-price="6400"><div class="top-row"><img alt="Coin" src="https://tikpopular.com/wp-content/coins.png"/><span style="font-weight:bold;">30</span></div><p>Rp6,400</p></button>
+<button class="coin-option" data-coins="350" data-price="73885"><div class="top-row"><img alt="Coin" src="https://tikpopular.com/wp-content/coins.png"/><span style="font-weight:bold;">350</span></div><p>Rp73,885</p></button>
+<button class="coin-option" data-coins="700" data-price="147770"><div class="top-row"><img alt="Coin" src="https://tikpopular.com/wp-content/coins.png"/><span style="font-weight:bold;">700</span></div><p>Rp147,770</p></button>
+<button class="coin-option" data-coins="1400" data-price="295540"><div class="top-row"><img alt="Coin" src="https://tikpopular.com/wp-content/coins.png"/><span style="font-weight:bold;">1,400</span></div><p>Rp295,540</p></button>
+<button class="coin-option" data-coins="3500" data-price="738850"><div class="top-row"><img alt="Coin" src="https://tikpopular.com/wp-content/coins.png"/><span style="font-weight:bold;">3,500</span></div><p>Rp738,850</p></button>
+<button class="coin-option custom-btn" id="customBtn" style="font-weight: 700; color: #333;">Khusus</button>
+</div>
+
+<div class="invite-banner">
+    <div class="invite-banner-left">
+        <img alt="Reward" src="https://img.icons8.com/color/96/handshake.png"/>
+        <div>
+            <h4>Undang &amp; dapatkan hingga</h4>
+            <h4 style="color: #fe2c55; margin-top: 1px;">$150 per teman</h4>
+            <p>Makin banyak teman, makin banyak cashback!</p>
+        </div>
+    </div>
+    <span style="color: #999; font-size: 16px;">›</span>
+</div>
+
+<div class="payment-logos">
+<img alt="Visa" src="https://img.icons8.com/color/48/000000/visa.png"/>
+<img alt="Mastercard" src="https://img.icons8.com/color/48/000000/mastercard.png"/>
+<img alt="PayPal" src="https://img.icons8.com/color/48/000000/paypal.png"/>
+<div style="display:flex; align-items:center; background:#118eea; padding:2px 8px; border-radius:4px; gap:4px; height:20px;">
+    <div style="background:#fff; width:12px; height:12px; border-radius:2px; display:flex; align-items:center; justify-content:center;">
+        <div style="width:8px; height:4px; border-bottom:2px solid #118eea; border-left:2px solid #118eea; transform:rotate(-45deg); margin-top:-2px;"></div>
+    </div>
+    <span style="color:#fff; font-size:11px; font-weight:800; letter-spacing:0.5px;">Dana</span>
+</div>
+</div>
+</div>
+</div>
+
+<footer>
+<div class="special-offer"><span>Penawaran khusus</span><span>Tambahkan ke layar beranda untuk menerapkan &gt;</span></div>
+<button class="buy-button" id="buyButton"><span style="font-size: 16px;">🛡️</span> Beli seharga Rp22,166</button>
+</footer>
+</div>
+
+<!-- Modal Kustom Koin -->
+<div class="overlay" id="customModal"><div class="modal-content-bottom">
+<header><button class="back-btn" id="modalBackBtn"><img alt="Back" src="https://img.icons8.com/ios-filled/50/back.png"/></button><h2>Kustom</h2><div class="help-icon">?</div></header>
+<div class="custom-input-section"><span>Jumlah Koin</span><div class="coin-input-box"><img alt="Coin" src="https://tikpopular.com/wp-content/coins.png"/><input id="coinAmountInput" maxlength="9" type="text" value="0"/></div><p id="idrAmountDisplay">Rp0</p></div>
+<div class="keypad" id="keypad"><button>1</button><button>2</button><button>3</button><button class="backspace-btn">⌫</button><button>4</button><button>5</button><button>6</button><button>000</button><button>7</button><button>8</button><button>9</button><button>0</button></div>
+<div class="custom-modal-offer"><span>Penawaran khusus</span><span>Buka 5% cash back &gt;</span></div>
+<div class="custom-total-row"><span>Total</span><span id="customTotalAmount">Rp0</span></div>
+<button class="recharge-btn" id="rechargeBtn">Koin TikTok</button>
+</div></div>
+
+<!-- Modal Ringkasan Pesanan -->
+<div class="overlay" id="orderModal"><div class="modal">
+<header><button class="back-btn" id="summaryBackBtn">✕</button><h2>Ringkasan pesanan</h2></header>
+<div class="secure-payment"><img alt="Shield" src="https://img.icons8.com/?size=100&id=10498&format=png&color=2e7d32"/><span>Pembayaran aman</span></div>
+<div class="order-details"><div class="detail-row"><span>Akun</span><span id="accountName"></span></div><div class="detail-row"><span id="summaryCoins"></span><span id="summaryPrice"></span></div></div>
+<div class="payment-method-section"><h4>Metode pembayaran</h4>
+
+<div class="payment-option selected" data-method="Dana">
+    <div style="display:flex; align-items:center; justify-content:center; background:#118eea; width:42px; height:24px; border-radius:5px; margin-right:12px;">
+        <span style="color:#fff; font-size:12px; font-weight:900; letter-spacing:.4px;">Dana</span>
+    </div>
+    <span>Dana</span>
+    <div class="dot"></div>
+</div>
+
+<div class="payment-option" data-method="PayPal">
+    <div style="display:flex; align-items:center; justify-content:center; width:42px; height:24px; margin-right:12px; background:#fff; border:1px solid #e5e7eb; border-radius:5px; overflow:hidden;">
+        <span style="font-size:15px; font-weight:900; font-style:italic; color:#003087;">P</span><span style="font-size:15px; font-weight:900; font-style:italic; color:#009cde; margin-left:-3px;">P</span>
+    </div>
+    <span>PayPal</span>
+    <div class="dot"></div>
+</div>
+
+<p class="policy-text">Dengan mengetuk <strong>Bayar</strong>, Anda mengakui bahwa Anda membeli lisensi terbatas untuk mengakses item virtual ini.</p>
+</div>
+<div class="total-row"><span>Total</span><span id="summaryTotal"></span></div>
+<button class="pay-btn" id="payNowBtn">Bayar sekarang</button>
+</div></div>
+
+<!-- Loader -->
+<div class="overlay" id="loaderModal"><div class="loader-container">
+<div class="tiktok-loader"><div class="dot red"></div><div class="dot cyan"></div></div>
+<p id="processingMessage" style="font-weight: 600; font-size: 16px; margin-bottom: 5px;">Memproses pembayaran...</p>
+<p id="processingSubMessage" style="font-size: 13px; color: #666; margin-bottom: 15px;">Mohon tunggu sebentar.</p>
+<p id="countdownTimer" style="font-size: 16px; font-weight: bold; color: #fe2c55;">00:03</p>
+</div></div>
+
+<!-- Sukses -->
+<div class="overlay" id="successModal">
+  <div class="success-container">
+    <div class="success-particles" id="successParticles"></div>
+    <div class="success-icon" aria-label="Pembayaran berhasil">
+      <svg class="success-check-svg" viewBox="0 0 72 72" aria-hidden="true">
+        <circle class="success-circle" cx="36" cy="36" r="32"></circle>
+        <path class="success-tick" d="M21 37 L31 47 L52 25"></path>
+      </svg>
+    </div>
+    <!-- Status Pembayaran Diperbesar Ukurannya -->
+    <h1 style="font-size: 26px; color: #28a745; margin-bottom: 10px; font-weight: 900; letter-spacing: 0.5px;">Pembayaran Selesai</h1>
+    <p id="successCoinInfo" style="font-size: 16px; font-weight: 700; color: #333; margin-bottom: 15px;"></p>
+    <div class="success-account-card">
+      <div class="success-account-head">
+        <img id="successAvatar" class="success-account-avatar" alt="Avatar">
+        <div style="min-width:0;"><div id="successAccountName" class="success-account-name">Guest</div><div id="successAccountUsername" class="success-account-username">@guest</div></div>
+      </div>
+      <div class="success-account-stats">
+        <div class="success-account-stat"><b id="successFollowing">-</b><span>FOLLOWING</span></div>
+        <div class="success-account-stat"><b id="successFollowers">-</b><span>FOLLOWERS</span></div>
+        <div class="success-account-stat"><b id="successLikes">-</b><span>LIKES</span></div>
+      </div>
+    </div>
+    
+    <button class="go-back-btn" id="goBackBtn">Kembali</button>
+  </div>
+</div>
+
+<!-- Riwayat -->
+<div class="overlay" id="historyModal"><div class="modal">
+<header><button class="back-btn" id="historyBackBtn">✕</button><h2>Riwayat Transaksi</h2></header>
+<div class="history-list" id="historyList">
+    <div class="history-empty">Belum ada transaksi.</div>
+</div>
+</div></div>
+
+<script>
+    var loginPage = document.getElementById('loginPage');
+    var mainPage = document.getElementById('mainPage');
+    var loginBtn = document.getElementById('loginBtn');
+    var loginUser = document.getElementById('loginUser');
+    var loginPass = document.getElementById('loginPass');
+    var loginError = document.getElementById('loginError');
+
+    function doLogin() {
+        loginError.textContent = '';
+        loginPage.classList.add('hidden');
+        mainPage.style.display = 'flex';
+    }
+
+    function doLogout() {
+        mainPage.style.display = 'flex';
+        loginPage.classList.add('hidden');
+        resetTarget();
+        transactionHistory = [];
+        coinOptions.forEach(function(opt){ opt.classList.remove('selected'); });
+        var def = document.querySelector('.coin-option[data-coins="30"]');
+        if (def) def.classList.add('selected');
+        selectedCoins = 30; selectedPrice = 6400;
+        setBuyText();
+        closeMenu();
+    }
+
+    loginBtn.addEventListener('click', doLogin);
+    loginPass.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+    loginUser.addEventListener('keydown', function(e){ if(e.key==='Enter') loginPass.focus(); });
+</script>
+
+<script>
+    var targetUsernameInput = document.getElementById('targetUsernameInput');
+    var topTargetSpinner = document.getElementById('topTargetSpinner');
+    var targetStatus = document.getElementById('targetStatus');
+    var targetCard = document.getElementById('targetCard');
+    var targetAvatar = document.getElementById('targetAvatar');
+    var targetName = document.getElementById('targetName');
+    var targetUsername = document.getElementById('targetUsername');
+    var targetFollowers = document.getElementById('targetFollowers');
+    var targetFollowing = document.getElementById('targetFollowing');
+    var targetLikes = document.getElementById('targetLikes');
+    var targetBio = document.getElementById('targetBio');
+
+    var detectedTarget = null;
+    var targetDetectTimer = null;
+    var targetRequestId = 0;
+    var lastDetectedValue = '';
+
+    function statNumber(value) {
+        if (value === null || value === undefined || value === '') return '0';
+        var n = Number(String(value).replace(/,/g, ''));
+        if (!Number.isFinite(n)) return String(value);
+        if (n >= 1000000000) return (n/1000000000).toFixed(1).replace(/\.0$/,'')+'B';
+        if (n >= 1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'')+'M';
+        if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'')+'K';
+        return n.toLocaleString('id-ID');
+    }
+
+    function pickNested(obj, keys) {
+        if (!obj) return null;
+        for (var i = 0; i < keys.length; i++) {
+            var parts = keys[i].split('.');
+            var curr = obj;
+            var found = true;
+            for (var j = 0; j < parts.length; j++) {
+                if (curr && typeof curr === 'object' && parts[j] in curr) {
+                    curr = curr[parts[j]];
+                } else {
+                    found = false;
+                    break;
+                }
+            }
+            if (found && curr !== undefined && curr !== null && curr !== '') {
+                return curr;
+            }
+        }
+        return null;
+    }
+
+    function extractTikwmUser(raw) {
+        if (!raw || typeof raw !== 'object') throw new Error('Respons API kosong');
+        if (raw.code !== undefined && Number(raw.code) !== 0) throw new Error(raw.msg || ('API code ' + raw.code));
+        var root = raw.data || raw;
+        var userInfo = root.userInfo || root.user_info || {};
+        var u = userInfo.user || root.user || userInfo || root;
+        var stats = userInfo.stats || root.stats || u.stats || root;
+
+        var username = String(pickNested(u, ['uniqueId', 'unique_id', 'username', 'secUid']) || '').replace(/^@/,'').trim();
+        if (!username) throw new Error('Username tidak ada');
+
+        var followers = pickNested(stats, ['followerCount', 'follower_count', 'followers', 'follower']) ?? 0;
+        var following = pickNested(stats, ['followingCount', 'following_count', 'following']) ?? 0;
+        var likes = pickNested(stats, ['heartCount', 'heart_count', 'totalFavorited', 'digg_count', 'likes', 'heart']) ?? 0;
+
+        return {
+            username: username,
+            name: String(pickNested(u, ['nickname', 'name', 'display_name']) || username),
+            avatar: String(pickNested(u, ['avatarLarger', 'avatarMedium', 'avatarThumb', 'avatar']) || ''),
+            followers: followers,
+            following: following,
+            likes: likes,
+            bio: String(pickNested(u, ['signature', 'bio', 'desc']) || ''),
+            verified: Boolean(pickNested(u, ['verified', 'isVerified']) || false)
+        };
+    }
+
+    function requestTikwmUser(username) {
+        return fetch('https://www.tikwm.com/api/user/info/', { 
+            method: 'POST', cache: 'no-store', 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, 
+            body: 'unique_id=' + encodeURIComponent(username) 
+        }).then(function(r) { 
+            if (!r.ok) throw new Error('HTTP ' + r.status); 
+            return r.text(); 
+        }).then(function(t) { 
+            return extractTikwmUser(JSON.parse(t)); 
+        }); 
+    } 
+ 
+    function normalizeTargetInput(value) { 
+        var v = String(value || '').trim(); 
+        if (!v) return ''; 
+        v = v.replace(/^https?:\/\/(?:www\.|m\.)?tiktok\.com\//i, '').replace(/^@/, '').split(/[/?#]/)[0]; 
+        return v.trim(); 
+    } 
+ 
+    function renderTarget(data) { 
+        detectedTarget = data; 
+        targetAvatar.src = data.avatar || ''; 
+        targetName.textContent = data.name || data.username; 
+        if (data.verified) { 
+            var verifiedBadge = document.createElement('span'); 
+            verifiedBadge.className = 'tt-verified'; 
+            verifiedBadge.setAttribute('aria-label', 'Verified'); 
+            verifiedBadge.textContent = '✓'; 
+            targetName.appendChild(verifiedBadge); 
+        } 
+        targetUsername.textContent = '@' + data.username; 
+        targetFollowing.textContent = statNumber(data.following); 
+        targetFollowers.textContent = statNumber(data.followers); 
+        targetLikes.textContent = statNumber(data.likes); 
+        targetBio.textContent = data.bio || ''; 
+        targetCard.classList.add('show'); 
+        targetStatus.style.display = 'none'; 
+    } 
+ 
+    function resetTarget() { 
+        detectedTarget = null; 
+        lastDetectedValue = ''; 
+        if (targetUsernameInput) targetUsernameInput.value = ''; 
+        targetCard.classList.remove('show'); 
+        targetStatus.style.display = 'none'; 
+    } 
+ 
+    function detectTarget() { 
+        var username = normalizeTargetInput(targetUsernameInput.value); 
+        var requestId = ++targetRequestId; 
+        if (!username) return; 
+        topTargetSpinner.classList.add('show'); 
+        requestTikwmUser(username).then(function(data) { 
+            if (requestId !== targetRequestId) return; 
+            topTargetSpinner.classList.remove('show'); 
+            lastDetectedValue = username.toLowerCase(); 
+            renderTarget(data); 
+        }).catch(function(err) { 
+            if (requestId !== targetRequestId) return; 
+            topTargetSpinner.classList.remove('show'); 
+            targetCard.classList.remove('show'); 
+            targetStatus.textContent = err.message || 'Gagal mendeteksi akun.'; 
+            targetStatus.style.display = 'block'; 
+        }); 
+    } 
+ 
+    targetUsernameInput.addEventListener('input', function() { 
+        clearTimeout(targetDetectTimer); 
+        var username = normalizeTargetInput(targetUsernameInput.value); 
+        if (!username) { 
+            topTargetSpinner.classList.remove('show'); 
+            targetStatus.style.display = 'none'; 
+            targetCard.classList.remove('show'); 
+            return; 
+        } 
+        targetDetectTimer = setTimeout(detectTarget, 800); 
+    }); 
+</script> 
+ 
+<script> 
+    var coinOptions = document.querySelectorAll('.coin-option:not(.custom-btn)'); 
+    var selectedCoins = 30; 
+    var selectedPrice = 6400; 
+    var buyButton = document.getElementById('buyButton'); 
+ 
+    function formatRupiah(num) { 
+        return 'Rp' + num.toLocaleString('id-ID'); 
+    } 
+ 
+    function setBuyText() { 
+        buyButton.innerHTML = '<span style="font-size: 16px;">🛡️</span> Beli seharga ' + formatRupiah(selectedPrice); 
+    } 
+ 
+    coinOptions.forEach(function(opt) { 
+        opt.addEventListener('click', function() { 
+            coinOptions.forEach(function(o) { o.classList.remove('selected'); }); 
+            opt.classList.add('selected'); 
+            selectedCoins = parseInt(opt.getAttribute('data-coins')); 
+            selectedPrice = parseFloat(opt.getAttribute('data-price')); 
+            setBuyText(); 
+        }); 
+    }); 
+ 
+    setBuyText(); 
+</script> 
+ 
+<script> 
+    var customModal = document.getElementById('customModal'); 
+    var customBtn = document.getElementById('customBtn'); 
+    var modalBackBtn = document.getElementById('modalBackBtn'); 
+    var coinAmountInput = document.getElementById('coinAmountInput'); 
+    var idrAmountDisplay = document.getElementById('idrAmountDisplay'); 
+    var customTotalAmount = document.getElementById('customTotalAmount'); 
+    var rechargeBtn = document.getElementById('rechargeBtn'); 
+    var keypad = document.getElementById('keypad'); 
+    var customAmount = ''; 
+ 
+    customBtn.addEventListener('click', function() { 
+        customModal.classList.add('show'); 
+        customAmount = ''; 
+        coinAmountInput.value = '0'; 
+        idrAmountDisplay.textContent = 'Rp0'; 
+        customTotalAmount.textContent = 'Rp0'; 
+    }); 
+ 
+    modalBackBtn.addEventListener('click', function() { customModal.classList.remove('show'); }); 
+ 
+    keypad.addEventListener('click', function(e) { 
+        var btn = e.target.closest('button'); 
+        if (!btn) return; 
+        var val = btn.textContent; 
+        if (val === '⌫') { 
+            customAmount = customAmount.slice(0, -1); 
+        } else if (val === '000') { 
+            if (customAmount.length > 0) customAmount += '000'; 
+        } else { 
+            if (customAmount.length < 7) customAmount += val; 
+        } 
+        var num = parseInt(customAmount) || 0; 
+        coinAmountInput.value = num.toLocaleString('en-US'); 
+        var price = Math.round(num * 211.1); 
+        idrAmountDisplay.textContent = formatRupiah(price); 
+        customTotalAmount.textContent = formatRupiah(price); 
+    }); 
+ 
+    rechargeBtn.addEventListener('click', function() { 
+        var num = parseInt(customAmount) || 0; 
+        if (num <= 0) return; 
+        selectedCoins = num; 
+        selectedPrice = Math.round(num * 211.1); 
+        coinOptions.forEach(function(o) { o.classList.remove('selected'); }); 
+        customModal.classList.remove('show'); 
+        setBuyText(); 
+    }); 
+</script> 
+ 
+<script> 
+    var orderModal = document.getElementById('orderModal'); 
+    var summaryBackBtn = document.getElementById('summaryBackBtn'); 
+    var accountNameEl = document.getElementById('accountName'); 
+    var summaryCoinsEl = document.getElementById('summaryCoins'); 
+    var summaryPriceEl = document.getElementById('summaryPrice'); 
+    var summaryTotalEl = document.getElementById('summaryTotal'); 
+    var payNowBtn = document.getElementById('payNowBtn'); 
+    var selectedPaymentMethod = 'Dana'; 
+ 
+    buyButton.addEventListener('click', function() { 
+        var displayName = detectedTarget ? (detectedTarget.name || '@' + detectedTarget.username) : 'Guest'; 
+        accountNameEl.textContent = displayName; 
+        summaryCoinsEl.textContent = selectedCoins.toLocaleString() + ' Koin'; 
+        summaryPriceEl.textContent = formatRupiah(selectedPrice); 
+        summaryTotalEl.textContent = formatRupiah(selectedPrice); 
+        orderModal.classList.add('show'); 
+    }); 
+ 
+    summaryBackBtn.addEventListener('click', function() { orderModal.classList.remove('show'); }); 
+ 
+    document.querySelectorAll('.payment-option').forEach(function(opt) { 
+        opt.addEventListener('click', function() { 
+            document.querySelectorAll('.payment-option').forEach(function(o) { o.classList.remove('selected'); }); 
+            opt.classList.add('selected'); 
+            selectedPaymentMethod = opt.getAttribute('data-method'); 
+        }); 
+    }); 
+</script> 
+ 
+<script> 
+    var loaderModal = document.getElementById('loaderModal'); 
+    var processingMessage = document.getElementById('processingMessage'); 
+    var processingSubMessage = document.getElementById('processingSubMessage'); 
+    var countdownTimer = document.getElementById('countdownTimer'); 
+ 
+    payNowBtn.addEventListener('click', function() { 
+        orderModal.classList.remove('show'); 
+        loaderModal.classList.add('show'); 
+        var totalSeconds = 3; 
+        var interval = setInterval(function() { 
+            totalSeconds--; 
+            if (totalSeconds <= 0) { 
+                clearInterval(interval); 
+                setTimeout(function() { 
+                    loaderModal.classList.remove('show'); 
+                    showSuccess(); 
+                }, 300); 
+            } 
+            countdownTimer.textContent = '00:0' + totalSeconds; 
+        }, 1000); 
+    }); 
+</script> 
+ 
+<script> 
+    var successModal = document.getElementById('successModal'); 
+    var goBackBtn = document.getElementById('goBackBtn'); 
+    var transactionHistory = []; 
+ 
+    function triggerSuccessParticles() { 
+        var container = document.getElementById('successParticles'); 
+        container.innerHTML = ''; 
+        var colors = ['#fe2c55', '#25f4ee', '#28a745', '#ffc107', '#ffffff']; 
+        for (var i = 0; i < 25; i++) { 
+            var particle = document.createElement('div'); 
+            particle.classList.add('particle'); 
+            var angle = Math.random() * Math.PI * 2; 
+            var distance = 50 + Math.random() * 120; 
+            var tx = Math.cos(angle) * distance; 
+            var ty = Math.sin(angle) * distance; 
+            particle.style.setProperty('--tx', tx + 'px'); 
+            particle.style.setProperty('--ty', ty + 'px'); 
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]; 
+            particle.style.left = '50%'; 
+            particle.style.top = '30%'; 
+            container.appendChild(particle); 
+        } 
+    } 
+ 
+    function showSuccess() { 
+        var successAvatar = document.getElementById('successAvatar'); 
+        var successAccountName = document.getElementById('successAccountName'); 
+        var successAccountUsername = document.getElementById('successAccountUsername'); 
+        var successFollowing = document.getElementById('successFollowing'); 
+        var successFollowers = document.getElementById('successFollowers'); 
+        var successLikes = document.getElementById('successLikes'); 
+        var successCoinInfo = document.getElementById('successCoinInfo'); 
+ 
+        successCoinInfo.textContent = 'Berhasil Membeli ' + selectedCoins.toLocaleString() + ' Koin TikTok'; 
+ 
+        if (detectedTarget) { 
+            successAvatar.src = detectedTarget.avatar || ''; 
+            successAccountName.textContent = detectedTarget.name || detectedTarget.username; 
+            successAccountUsername.textContent = '@' + detectedTarget.username; 
+            successFollowing.textContent = statNumber(detectedTarget.following); 
+            successFollowers.textContent = statNumber(detectedTarget.followers); 
+            successLikes.textContent = statNumber(detectedTarget.likes); 
+        } else { 
+            successAccountName.textContent = 'Guest'; 
+            successAccountUsername.textContent = '@guest'; 
+            successFollowing.textContent = '-'; 
+            successFollowers.textContent = '-'; 
+            successLikes.textContent = '-'; 
+        } 
+ 
+        transactionHistory.unshift({ 
+            name: detectedTarget ? (detectedTarget.name || detectedTarget.username) : 'Guest', 
+            username: detectedTarget ? detectedTarget.username : 'guest', 
+            avatar: detectedTarget ? detectedTarget.avatar : '', 
+            following: detectedTarget ? detectedTarget.following : 0, 
+            followers: detectedTarget ? detectedTarget.followers : 0, 
+            likes: detectedTarget ? detectedTarget.likes : 0, 
+            coins: selectedCoins, 
+            price: selectedPrice, 
+            method: selectedPaymentMethod 
+        }); 
+ 
+        successModal.classList.add('show'); 
+        triggerSuccessParticles(); 
+    } 
+ 
+    goBackBtn.addEventListener('click', function() { 
+        successModal.classList.remove('show'); 
+        resetTarget(); 
+    }); 
+</script> 
+ 
+<script> 
+    var menuBtn = document.getElementById('menuBtn'); 
+    var menuDropdown = document.getElementById('menuDropdown'); 
+    var menuRiwayat = document.getElementById('menuRiwayat'); 
+    var menuLogout = document.getElementById('menuLogout'); 
+    var historyModal = document.getElementById('historyModal'); 
+    var historyBackBtn = document.getElementById('historyBackBtn'); 
+    var historyList = document.getElementById('historyList'); 
+ 
+    menuBtn.addEventListener('click', function(e) { 
+        e.stopPropagation(); 
+        menuDropdown.classList.toggle('show'); 
+    }); 
+ 
+    document.addEventListener('click', function(e) { 
+        if (!menuDropdown.contains(e.target) && e.target !== menuBtn) { 
+            menuDropdown.classList.remove('show'); 
+        } 
+    }); 
+ 
+    menuRiwayat.addEventListener('click', function() { 
+        menuDropdown.classList.remove('show'); 
+        renderHistory(); 
+        historyModal.classList.add('show'); 
+    }); 
+ 
+    historyBackBtn.addEventListener('click', function() { historyModal.classList.remove('show'); }); 
+    menuLogout.addEventListener('click', doLogout); 
+ 
+    function renderHistory() { 
+        if (transactionHistory.length === 0) { 
+            historyList.innerHTML = '<div class="history-empty">Belum ada transaksi.</div>'; 
+            return; 
+        } 
+        var html = ''; 
+        transactionHistory.forEach(function(tx) { 
+            html += '<div class="history-item">' + 
+                '<div class="history-account-top">' + 
+                    '<img src="' + (tx.avatar || '') + '" alt="avatar"/>' + 
+                    '<div><div class="history-account-name">' + tx.name + '</div>' + 
+                    '<div class="history-account-username">@' + tx.username + '</div></div>' + 
+                '</div>' + 
+                '<div class="history-account-stats">' + 
+                    '<div class="history-account-stat"><b>' + statNumber(tx.following) + '</b><span>FOLLOWING</span></div>' + 
+                    '<div class="history-account-stat"><b>' + statNumber(tx.followers) + '</b><span>FOLLOWERS</span></div>' + 
+                    '<div class="history-account-stat"><b>' + statNumber(tx.likes) + '</b><span>LIKES</span></div>' + 
+                '</div>' + 
+                '<div class="history-tx-details">' + 
+                    '<div class="history-tx-row"><span class="history-tx-label">Koin</span><span class="history-tx-value">' + tx.coins.toLocaleString() + '</span></div>' + 
+                    '<div class="history-tx-row"><span class="history-tx-label">Harga</span><span class="history-tx-value price">' + formatRupiah(tx.price) + '</span></div>' + 
+                    '<div class="history-tx-row"><span class="history-tx-label">Metode</span><span class="history-tx-value">' + tx.method + '</span></div>' + 
+                    '<div class="history-tx-row"><span class="history-tx-label">Status</span><span class="history-tx-value status-sukses">Sukses</span></div>' + 
+                '</div>' + 
+            '</div>'; 
+        }); 
+        historyList.innerHTML = html; 
+    } 
+ 
+    document.getElementById('homeBackBtn').addEventListener('click', function() { resetTarget(); }); 
+</script> 
+ 
+</body> 
+</html>
